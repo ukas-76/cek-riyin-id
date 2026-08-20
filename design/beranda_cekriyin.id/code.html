@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Cekriyin.id - Cek Pesan Mencurigakan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#141b2b",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "secondary-fixed": "#dce2f7",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#924628",
+                        "tertiary-container": "#b05e3d",
+                        "surface-dim": "#d9dadb",
+                        "surface": "#f8f9fa",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-container-highest": "#e1e3e4",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#f4fffc",
+                        "outline-variant": "#bcc9c6",
+                        "on-background": "#191c1d",
+                        "primary-fixed": "#89f5e7",
+                        "surface-tint": "#006a61",
+                        "inverse-surface": "#2e3132",
+                        "primary": "#00685f",
+                        "surface-variant": "#e1e3e4",
+                        "secondary": "#575e70",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#008378",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container": "#edeeef",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#6bd8cb",
+                        "on-primary-fixed-variant": "#005049",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#d9dff5",
+                        "on-secondary-fixed-variant": "#404758",
+                        "on-surface-variant": "#3d4947",
+                        "background": "#f8f9fa",
+                        "outline": "#6d7a77",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-primary-fixed": "#00201d",
+                        "surface-container-low": "#f3f4f5",
+                        "on-secondary-container": "#5c6274",
+                        "on-tertiary-fixed": "#370e00",
+                        "on-tertiary-fixed-variant": "#773215"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "section_gap": "64px",
+                        "component_gap": "16px",
+                        "page_margin": "32px",
+                        "container_max": "1200px",
+                        "gutter": "24px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "display": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "caption": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display": ["36px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "caption": ["12px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest h-[64px] w-full sticky top-0 z-50 border-b border-outline-variant flat no shadows">
+<div class="flex justify-between items-center max-w-[1200px] mx-auto px-page_margin h-full">
+<a class="font-display text-headline-md font-bold text-primary hover:opacity-80 transition-opacity" href="#">Cekriyin.id</a>
+<div class="hidden md:flex gap-gutter items-center h-full pt-1">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 h-full flex items-center mt-[2px] font-label-md text-label-md hover:bg-surface-container-low transition-all duration-200" href="#">Home</a>
+<a class="text-secondary font-medium hover:text-primary transition-colors h-full flex items-center font-label-md text-label-md hover:bg-surface-container-low transition-all duration-200" href="#cara-kerja">Cara Kerja</a>
+</div>
+<button class="bg-surface-container-lowest border border-on-surface-variant text-on-surface font-label-md text-label-md px-[16px] py-[8px] rounded-DEFAULT hover:bg-surface-container-low transition-colors active:scale-[0.98]">
+                Masuk
+            </button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow flex flex-col">
+<!-- Hero Section -->
+<section class="max-w-[1200px] mx-auto w-full px-page_margin py-[120px] md:py-[160px] flex flex-col items-center justify-center relative">
+<div class="text-center max-w-[800px] w-full mb-section_gap z-10">
+<h1 class="font-display text-display text-on-surface mb-component_gap tracking-tight">Dapat pesan mencurigakan?</h1>
+<p class="font-headline-lg text-headline-lg text-secondary">Cek dulu sebelum percaya.</p>
+</div>
+<div class="flex items-center justify-center mb-component_gap w-full max-w-[800px] mx-auto">
+<div class="flex bg-surface-container p-[4px] rounded-lg w-full sm:w-auto">
+<button onclick="const btns=this.parentElement.querySelectorAll('button'); btns.forEach(b=&gt;b.className='flex-1 sm:flex-none px-[24px] py-[8px] rounded-DEFAULT text-secondary font-label-md text-label-md hover:text-primary transition-colors'); this.className='flex-1 sm:flex-none px-[24px] py-[8px] rounded-DEFAULT bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm transition-all'; document.querySelector('textarea').placeholder='Tempel nomor telepon yang ingin kamu cek...';" class="flex-1 sm:flex-none px-[24px] py-[8px] rounded-DEFAULT bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm transition-all">Nomor</button>
+<button onclick="const btns=this.parentElement.querySelectorAll('button'); btns.forEach(b=&gt;b.className='flex-1 sm:flex-none px-[24px] py-[8px] rounded-DEFAULT text-secondary font-label-md text-label-md hover:text-primary transition-colors'); this.className='flex-1 sm:flex-none px-[24px] py-[8px] rounded-DEFAULT bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm transition-all'; document.querySelector('textarea').placeholder='Tempel isi pesan yang ingin kamu cek...';" class="flex-1 sm:flex-none px-[24px] py-[8px] rounded-DEFAULT text-secondary font-label-md text-label-md hover:text-primary transition-colors">Pesan</button>
+<button onclick="const btns=this.parentElement.querySelectorAll('button'); btns.forEach(b=&gt;b.className='flex-1 sm:flex-none px-[24px] py-[8px] rounded-DEFAULT text-secondary font-label-md text-label-md hover:text-primary transition-colors'); this.className='flex-1 sm:flex-none px-[24px] py-[8px] rounded-DEFAULT bg-surface-container-lowest text-primary font-label-md text-label-md shadow-sm transition-all'; document.querySelector('textarea').placeholder='Tempel link/tautan yang ingin kamu cek...';" class="flex-1 sm:flex-none px-[24px] py-[8px] rounded-DEFAULT text-secondary font-label-md text-label-md hover:text-primary transition-colors">Tautan</button>
+</div>
+</div><div class="w-full max-w-[800px] relative z-10 flex flex-col gap-component_gap bg-surface-container-lowest p-[8px] rounded-lg border border-outline-variant">
+<div class="relative w-full group">
+<textarea class="w-full h-[200px] resize-none bg-transparent text-on-surface font-body-md text-body-md p-[16px] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface-container-lowest rounded-DEFAULT border-none placeholder-secondary-fixed-dim" placeholder="Tempel nomor telepon yang ingin kamu cek..."></textarea>
+</div>
+<div class="flex flex-col sm:flex-row items-center justify-between gap-component_gap px-[8px] pb-[8px]">
+<span class="font-caption text-caption text-secondary flex items-center gap-[4px]">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+                        Tidak perlu login untuk melakukan pengecekan.
+                    </span>
+<button class="w-full sm:w-auto bg-primary text-on-primary font-label-md text-label-md px-[32px] py-[12px] rounded-DEFAULT hover:bg-on-primary-fixed-variant transition-colors flex items-center justify-center gap-[8px]">
+                        Cek Sekarang
+                        <span class="material-symbols-outlined text-[18px]">search</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Cara Kerja Section -->
+<section class="w-full bg-surface py-section_gap border-t border-outline-variant" id="cara-kerja">
+<div class="max-w-[1200px] mx-auto px-page_margin">
+<div class="mb-[48px]">
+<h2 class="font-headline-md text-headline-md text-on-surface">Cara kerja Cekriyin</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-[48px] md:gap-gutter relative">
+<!-- Connector Line (Desktop) -->
+<div class="hidden md:block absolute top-[24px] left-[10%] right-[10%] h-[1px] bg-outline-variant z-0"></div>
+<!-- Step 1 -->
+<div class="flex flex-col relative z-10">
+<div class="bg-surface w-[48px] h-[48px] flex items-center font-display text-headline-lg text-primary-container mb-component_gap">
+                            01
+                        </div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-base">Copy</h3>
+<p class="font-body-md text-body-md text-secondary">
+                            Salin teks pesan mencurigakan, link, atau nomor telepon yang Anda terima dari platform apapun.
+                        </p>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col relative z-10">
+<div class="bg-surface w-[48px] h-[48px] flex items-center font-display text-headline-lg text-primary-container mb-component_gap">
+                            02
+                        </div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-base">Cek</h3>
+<p class="font-body-md text-body-md text-secondary">
+                            Tempelkan pada area teks di atas dan klik tombol "Cek Sekarang" untuk memulai analisis sistem kami.
+                        </p>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col relative z-10">
+<div class="bg-surface w-[48px] h-[48px] flex items-center font-display text-headline-lg text-primary-container mb-component_gap">
+                            03
+                        </div>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mb-base">Lihat hasil</h3>
+<p class="font-body-md text-body-md text-secondary">
+                            Dapatkan laporan instan mengenai tingkat risiko dan indikasi penipuan dari data yang Anda masukkan.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest w-full py-section_gap border-t border-outline-variant flat no shadows mt-auto">
+<div class="max-w-[1200px] mx-auto px-page_margin flex flex-col md:flex-row justify-between items-center gap-base">
+<div class="flex flex-col items-center md:items-start gap-[4px] mb-component_gap md:mb-0">
+<span class="font-display text-headline-md font-bold text-primary">Cekriyin.id</span>
+<span class="text-secondary font-caption text-caption opacity-100">© 2024 Cekriyin.id. Melindungi privasi digital Anda.</span>
+</div>
+<div class="flex flex-wrap justify-center md:justify-end gap-gutter">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md opacity-100 hover:opacity-80 transition-opacity" href="#">Tentang Kami</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md opacity-100 hover:opacity-80 transition-opacity" href="#">Kebijakan Privasi</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md opacity-100 hover:opacity-80 transition-opacity" href="#">Syarat &amp; Ketentuan</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md opacity-100 hover:opacity-80 transition-opacity" href="#">Kontak</a>
+</div>
+</div>
+</footer>
+
+
+</body></html>

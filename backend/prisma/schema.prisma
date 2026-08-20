@@ -1,0 +1,68 @@
+generator client {
+  provider      = "prisma-client-js"
+  engineType    = "binary"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  password_hash String
+  created_at    DateTime      @default(now())
+
+  checks        Check[]
+  saved_numbers SavedNumber[]
+  comments      Comment[]
+
+  @@map("users")
+}
+
+model Check {
+  id         String   @id @default(uuid())
+  user_id    String?
+  user       User?    @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  type       String   // "number" | "message" | "link"
+  input      String   @db.Text
+  risk_level String   // "Tidak Ditemukan Laporan" | "Perlu Waspada" | "Risiko Tinggi"
+  result     Json
+  created_at DateTime @default(now())
+
+  @@map("checks")
+}
+
+model PhoneReport {
+  id           String   @id @default(uuid())
+  phone_number String
+  category     String
+  description  String   @db.Text
+  created_at   DateTime @default(now())
+
+  @@map("phone_reports")
+}
+
+model SavedNumber {
+  id           String   @id @default(uuid())
+  user_id      String
+  user         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  phone_number String
+  created_at   DateTime @default(now())
+
+  @@map("saved_numbers")
+}
+
+model Comment {
+  id               String   @id @default(uuid())
+  user_id          String
+  user             User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  target_type      String   // "number" | "message" | "link"
+  target_reference String   @db.Text
+  content          String   @db.Text
+  created_at       DateTime @default(now())
+
+  @@map("comments")
+}

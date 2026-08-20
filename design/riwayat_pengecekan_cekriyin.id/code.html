@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Riwayat Pengecekan - Cekriyin.id</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+<!-- Tailwind Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#141b2b",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "secondary-fixed": "#dce2f7",
+                        "on-tertiary-container": "#fffbff",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#924628",
+                        "tertiary-container": "#b05e3d",
+                        "surface-dim": "#d9dadb",
+                        "surface": "#f8f9fa",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-container-highest": "#e1e3e4",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#f4fffc",
+                        "outline-variant": "#bcc9c6",
+                        "on-background": "#191c1d",
+                        "primary-fixed": "#89f5e7",
+                        "surface-tint": "#006a61",
+                        "inverse-surface": "#2e3132",
+                        "primary": "#00685f",
+                        "surface-variant": "#e1e3e4",
+                        "secondary": "#575e70",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#008378",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-container": "#edeeef",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#6bd8cb",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#6bd8cb",
+                        "on-primary-fixed-variant": "#005049",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#d9dff5",
+                        "on-secondary-fixed-variant": "#404758",
+                        "on-surface-variant": "#3d4947",
+                        "background": "#f8f9fa",
+                        "outline": "#6d7a77",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-primary-fixed": "#00201d",
+                        "surface-container-low": "#f3f4f5",
+                        "on-secondary-container": "#5c6274",
+                        "on-tertiary-fixed": "#370e00",
+                        "on-tertiary-fixed-variant": "#773215"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "section_gap": "64px",
+                        "component_gap": "16px",
+                        "page_margin": "32px",
+                        "container_max": "1200px",
+                        "gutter": "24px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "display": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "caption": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display": ["36px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "caption": ["12px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar (JSON Injected) -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-lowest h-[64px] w-full sticky top-0 z-50 border-b border-outline-variant dark:border-outline">
+<div class="flex justify-between items-center max-w-[1200px] mx-auto px-page_margin h-full">
+<!-- Brand -->
+<div class="font-display text-headline-md font-bold text-primary dark:text-primary-fixed">
+                Cekriyin.id
+            </div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex gap-component_gap">
+<!-- Intent mapping: Neither Home nor Cara Kerja represent "History", rendering as inactive -->
+<a class="text-secondary dark:text-secondary-fixed-dim font-medium hover:text-primary transition-colors font-label-md text-label-md px-3 py-2 rounded hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-all duration-200" href="#">Home</a>
+<a class="text-secondary dark:text-secondary-fixed-dim font-medium hover:text-primary transition-colors font-label-md text-label-md px-3 py-2 rounded hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-all duration-200" href="#">Cara Kerja</a>
+</nav>
+<!-- Trailing Action -->
+<div class="flex items-center gap-4">
+<!-- Simulating logged-in state context alongside required JSON action -->
+<div class="hidden md:flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+<span>Akun Saya</span>
+</div>
+<!-- Required JSON Action -->
+<a class="font-label-md text-label-md bg-primary text-on-primary px-4 py-2 rounded-lg hover:bg-on-primary-fixed-variant transition-colors" href="#">
+                    Masuk
+                </a>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-[1200px] mx-auto px-page_margin py-section_gap flex flex-col gap-component_gap">
+<!-- Header Section -->
+<div class="mb-gutter flex flex-col gap-2">
+<h1 class="font-display text-display text-on-surface">Riwayat pengecekan</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Daftar pencarian nomor telepon dan pesan yang telah Anda periksa.</p>
+</div>
+<!-- History List Container -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden flex flex-col">
+<!-- List Header (Desktop) -->
+<div class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 border-b border-surface-variant bg-surface-container-low">
+<div class="col-span-5 font-label-md text-label-md text-on-surface-variant">Detail Pengecekan</div>
+<div class="col-span-4 font-label-md text-label-md text-on-surface-variant">Status Risiko</div>
+<div class="col-span-3 font-label-md text-label-md text-on-surface-variant text-right">Tanggal</div>
+</div>
+<!-- List Item 1 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-5 border-b border-surface-variant hover:bg-surface-container-low transition-colors items-center">
+<!-- Detail -->
+<div class="col-span-1 md:col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">phone_iphone</span>
+</div>
+<div>
+<div class="font-body-md text-body-md font-medium text-on-surface">0812-XXXX-XXXX</div>
+<div class="font-caption text-caption text-secondary">Pengecekan Nomor</div>
+</div>
+</div>
+<!-- Status -->
+<div class="col-span-1 md:col-span-4 flex items-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-error-container text-on-error-container font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+                        Risiko tinggi
+                    </span>
+</div>
+<!-- Date -->
+<div class="col-span-1 md:col-span-3 text-left md:text-right font-body-md text-body-md text-on-surface-variant">
+                    19 Agustus 2026
+                </div>
+</div>
+<!-- List Item 2 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-5 hover:bg-surface-container-low transition-colors items-center">
+<!-- Detail -->
+<div class="col-span-1 md:col-span-5 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chat</span>
+</div>
+<div>
+<div class="font-body-md text-body-md font-medium text-on-surface">Pesan WhatsApp</div>
+<div class="font-caption text-caption text-secondary">Analisis Teks</div>
+</div>
+</div>
+<!-- Status -->
+<div class="col-span-1 md:col-span-4 flex items-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-tertiary-container text-on-tertiary-container font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">info</span>
+                        Perlu waspada
+                    </span>
+</div>
+<!-- Date -->
+<div class="col-span-1 md:col-span-3 text-left md:text-right font-body-md text-body-md text-on-surface-variant">
+                    18 Agustus 2026
+                </div>
+</div>
+</div>
+<!-- Pagination (Implicit for History) -->
+<div class="flex justify-center mt-6">
+<button class="font-label-md text-label-md text-secondary border border-outline-variant px-4 py-2 rounded-lg hover:bg-surface-container-low transition-colors">
+                Muat Lebih Banyak
+            </button>
+</div>
+</main>
+<!-- Footer (JSON Injected) -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full py-section_gap border-t border-outline-variant dark:border-outline mt-auto">
+<div class="max-w-[1200px] mx-auto px-page_margin flex flex-col md:flex-row justify-between items-center gap-base">
+<div class="flex flex-col items-center md:items-start gap-2">
+<div class="font-display text-headline-md font-bold text-primary dark:text-primary-fixed">
+                    Cekriyin.id
+                </div>
+<div class="font-caption text-caption text-secondary dark:text-secondary-fixed-dim">
+                    © 2024 Cekriyin.id. Melindungi privasi digital Anda.
+                </div>
+</div>
+<nav class="flex flex-wrap justify-center gap-4 mt-4 md:mt-0">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors opacity-100 hover:opacity-80 transition-opacity" href="#">Tentang Kami</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors opacity-100 hover:opacity-80 transition-opacity" href="#">Kebijakan Privasi</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors opacity-100 hover:opacity-80 transition-opacity" href="#">Syarat &amp; Ketentuan</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors opacity-100 hover:opacity-80 transition-opacity" href="#">Kontak</a>
+</nav>
+</div>
+</footer>
+</body></html>
