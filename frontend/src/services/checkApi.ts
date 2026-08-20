@@ -35,7 +35,7 @@ export interface CheckApiResponse {
   indicators: string[];
 }
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://cek-riyin-id.vercel.app/api';
 
 export async function checkInput(params: CheckApiRequest): Promise<CheckApiResponse> {
   return fetchWithCredentials(`${API_BASE_URL}/check`, {

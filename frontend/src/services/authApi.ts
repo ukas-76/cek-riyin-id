@@ -15,7 +15,7 @@ export interface MeApiResponse {
   user: UserProfile | null;
 }
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://cek-riyin-id.vercel.app/api';
 
 /**
  * Common fetch wrapper supporting cookies and Bearer token fallback.
