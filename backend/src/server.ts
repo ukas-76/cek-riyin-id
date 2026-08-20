@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: ['https://cekriyin.id', 'https://www.cekriyin.id', 'http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: true,
   credentials: true
 }));
 app.use(express.json());
@@ -36,6 +36,14 @@ app.use((req, _res, next) => {
   next();
 });
 app.use(cookieParser());
+
+// Root route
+app.get('/', (_req: Request, res: Response) => {
+  res.status(200).json({
+    message: 'Cekriyin Backend API is running successfully on Vercel!',
+    health: '/api/health'
+  });
+});
 
 // Routes
 app.use('/api/check', checkRoutes);
