@@ -33,7 +33,6 @@ export async function fetchWithCredentials(url: string, options: RequestInit = {
 
   const response = await fetch(url, {
     ...options,
-    credentials: 'include',
     headers,
   });
 
