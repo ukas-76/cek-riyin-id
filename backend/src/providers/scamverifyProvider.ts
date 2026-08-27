@@ -80,7 +80,7 @@ export class ScamVerifyProvider {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify({ input: text, text })
+        body: JSON.stringify({ message: text, text, input: text })
       });
 
       console.log(`[SCAMVERIFY_TEXT] [RESPONSE] HTTP Status: ${response.status} ${response.statusText}`);
@@ -153,7 +153,7 @@ export class ScamVerifyProvider {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify({ input: url, url })
+        body: JSON.stringify({ url: url, link: url, input: url })
       });
 
       console.log(`[SCAMVERIFY_URL] [RESPONSE] HTTP Status: ${response.status} ${response.statusText}`);

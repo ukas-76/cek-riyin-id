@@ -1,5 +1,7 @@
 import { pool } from '../db';
 import { normalizePhoneNumber, getCountryCodeInfo } from '../utils/phoneUtils';
+import { veriphoneProvider } from '../providers/veriphoneProvider';
+import { abstractApiProvider } from '../providers/abstractApiProvider';
 import { telesignProvider } from '../providers/telesignProvider';
 
 export type CheckRiskLevel = 'NO_REPORT' | 'LOW' | 'MEDIUM' | 'HIGH' | 'UNKNOWN';
@@ -11,7 +13,7 @@ export interface UnifiedCheckResult {
   riskLevel: CheckRiskLevel;
   title: string;
   description: string;
-  source: 'telesign' | 'scamverify' | 'local_report' | 'local_rules' | 'combined' | 'unknown';
+  source: 'veriphone' | 'abstract_api' | 'telesign' | 'scamverify' | 'local_report' | 'local_rules' | 'combined' | 'unknown';
   confidence: 'high' | 'medium' | 'low';
   providerScore?: number | null;
   providerLevel?: string | null;
@@ -27,7 +29,7 @@ export interface UnifiedCheckResult {
 
 export class NumberCheckService {
   /**
-   * Performs reputation lookup on phone numbers combining local reports, country risk rules, and Telesign Intelligence Cloud.
+   * Performs reputation lookup on phone numbers combining local reports, country risk rules, Veriphone, AbstractAPI, and Telesign.
    */
   async checkNumber(rawInput: string): Promise<UnifiedCheckResult> {
     const normalizedInput = normalizePhoneNumber(rawInput);
@@ -58,8 +60,58 @@ export class NumberCheckService {
     const categories = Array.from(categoriesSet);
     console.log(`[LOCAL_DB] Phone Reports Found: ${reportCount} (Categories: ${categories.join(', ') || 'None'})`);
 
-    // 2. Real Telesign Intelligence Cloud Call
-    const telesignResponse = await telesignProvider.checkNumber(normalizedInput);
+    // 2. Real External Provider Lookup (Priority 1: Veriphone [Free 1k/mo], Priority 2: AbstractAPI, Priority 3: Telesign)
+    let apiProviderResult: {
+      providerName: 'veriphone' | 'abstract_api' | 'telesign';
+      riskSignal: 'LOW' | 'MEDIUM' | 'HIGH' | 'UNKNOWN';
+      score?: number;
+      type?: string;
+      carrier?: string;
+      details?: string;
+    } | null = null;
+
+    let providerErrorMessage: string | undefined;
+
+    if (veriphoneProvider.isConfigured()) {
+      const veriphoneRes = await veriphoneProvider.checkNumber(normalizedInput);
+      if (veriphoneRes.status === 'success' && veriphoneRes.result) {
+        apiProviderResult = {
+          providerName: 'veriphone',
+          riskSignal: veriphoneRes.result.riskSignal,
+          type: veriphoneRes.result.phoneType,
+          carrier: veriphoneRes.result.carrier,
+          details: `Veriphone API (Tipe: ${veriphoneRes.result.phoneType.toUpperCase()}, Operator: ${veriphoneRes.result.carrier}, Negara: ${veriphoneRes.result.country})`
+        };
+      } else if (veriphoneRes.status === 'error') {
+        providerErrorMessage = veriphoneRes.errorMessage;
+      }
+    } else if (abstractApiProvider.isConfigured()) {
+      const abstractRes = await abstractApiProvider.checkNumber(normalizedInput);
+      if (abstractRes.status === 'success' && abstractRes.result) {
+        apiProviderResult = {
+          providerName: 'abstract_api',
+          riskSignal: abstractRes.result.riskSignal,
+          score: Math.round(abstractRes.result.qualityScore * 100),
+          type: abstractRes.result.type,
+          carrier: abstractRes.result.carrier,
+          details: `AbstractAPI Phone Validation (Tipe: ${abstractRes.result.type}, Operator: ${abstractRes.result.carrier})`
+        };
+      } else if (abstractRes.status === 'error') {
+        providerErrorMessage = abstractRes.errorMessage;
+      }
+    } else if (telesignProvider.isConfigured()) {
+      const telesignRes = await telesignProvider.checkNumber(normalizedInput);
+      if (telesignRes.status === 'success' && telesignRes.result) {
+        apiProviderResult = {
+          providerName: 'telesign',
+          riskSignal: telesignRes.result.riskSignal,
+          score: telesignRes.result.score,
+          details: `Telesign Intelligence (Score: ${telesignRes.result.score}, Recommendation: ${telesignRes.result.recommendation})`
+        };
+      } else if (telesignRes.status === 'error') {
+        providerErrorMessage = telesignRes.errorMessage;
+      }
+    }
 
     // 3. Risk Aggregation & Decision Logic
     let riskLevel: CheckRiskLevel = 'NO_REPORT';
@@ -69,41 +121,41 @@ export class NumberCheckService {
     let confidence: UnifiedCheckResult['confidence'] = 'high';
     const indicators: string[] = [];
 
-    const telesignResult = telesignResponse.status === 'success' ? telesignResponse.result : null;
+    if (apiProviderResult) {
+      const isHigh = apiProviderResult.riskSignal === 'HIGH';
+      const isMedium = apiProviderResult.riskSignal === 'MEDIUM';
+      const isLow = apiProviderResult.riskSignal === 'LOW';
 
-    if (telesignResult) {
-      const hasTelesignHigh = telesignResult.riskSignal === 'HIGH';
-      const hasTelesignMedium = telesignResult.riskSignal === 'MEDIUM';
-      const hasTelesignLow = telesignResult.riskSignal === 'LOW';
+      const providerLabel = apiProviderResult.providerName === 'veriphone' ? 'Veriphone' : apiProviderResult.providerName === 'abstract_api' ? 'AbstractAPI' : 'Telesign';
 
-      if (reportCount >= 3 || hasTelesignHigh) {
+      if (reportCount >= 3 || isHigh) {
         riskLevel = 'HIGH';
         title = 'Risiko Tinggi';
-        description = 'Nomor ini memiliki indikasi penipuan berdasarkan sinyal Telesign Intelligence / laporan komunitas.';
+        description = `Nomor ini memiliki indikasi penipuan/risiko berdasarkan sinyal ${providerLabel} & laporan komunitas.`;
         confidence = 'high';
-        source = reportCount >= 3 && telesignResult ? 'combined' : 'telesign';
+        source = reportCount >= 3 ? 'combined' : apiProviderResult.providerName;
 
         if (reportCount > 0) indicators.push(`Terdapat ${reportCount} laporan penipuan dari komunitas`);
-        indicators.push(`Sinyal Telesign Score: ${telesignResult.score}/1000 (${telesignResult.recommendation})`);
-      } else if (reportCount >= 1 || hasTelesignMedium) {
+        if (apiProviderResult.details) indicators.push(apiProviderResult.details);
+      } else if (reportCount >= 1 || isMedium) {
         riskLevel = 'MEDIUM';
         title = 'Perlu Waspada';
         description = 'Terdapat beberapa indikasi atau laporan yang perlu diperhatikan terkait nomor ini.';
         confidence = 'medium';
-        source = reportCount > 0 ? 'combined' : 'telesign';
+        source = reportCount > 0 ? 'combined' : apiProviderResult.providerName;
 
         if (reportCount > 0) indicators.push(`Terdapat ${reportCount} laporan dari komunitas`);
-        indicators.push(`Sinyal Telesign Score: ${telesignResult.score}/1000 (${telesignResult.recommendation})`);
-      } else if (hasTelesignLow && reportCount === 0) {
+        if (apiProviderResult.details) indicators.push(apiProviderResult.details);
+      } else if (isLow && reportCount === 0) {
         riskLevel = 'LOW';
         title = 'Risiko Rendah';
-        description = 'Sinyal Telesign Intelligence menunjukkan tingkat risiko rendah.';
-        source = 'telesign';
+        description = `Sinyal verifikasi ${providerLabel} menunjukkan status nomor valid dan tingkat risiko rendah.`;
+        source = apiProviderResult.providerName;
         confidence = 'medium';
-        indicators.push(`Sinyal Telesign Score: ${telesignResult.score}/1000 (${telesignResult.recommendation})`);
+        if (apiProviderResult.details) indicators.push(apiProviderResult.details);
       }
-    } else if (telesignResponse.status === 'error') {
-      console.warn(`[CHECK_NUMBER] Provider call failed: ${telesignResponse.errorMessage}`);
+    } else if (providerErrorMessage) {
+      console.warn(`[CHECK_NUMBER] Provider call failed: ${providerErrorMessage}`);
       if (reportCount >= 3) {
         riskLevel = 'HIGH';
         title = 'Risiko Tinggi';
@@ -119,12 +171,12 @@ export class NumberCheckService {
       } else {
         riskLevel = 'UNKNOWN';
         title = 'Tidak Dapat Menentukan';
-        description = `Layanan verifikasi reputasi eksternal mengalami kendala (${telesignResponse.errorMessage}) dan belum ada laporan komunitas.`;
+        description = `Layanan verifikasi reputasi eksternal mengalami kendala (${providerErrorMessage}) dan belum ada laporan komunitas.`;
         source = 'unknown';
         confidence = 'low';
       }
     } else {
-      // Telesign unconfigured & DB lookup
+      // All API Providers unconfigured -> Use Local DB Lookup & Country Rules
       if (reportCount >= 3) {
         riskLevel = 'HIGH';
         title = 'Risiko Tinggi';
@@ -179,12 +231,14 @@ export class NumberCheckService {
       description,
       source,
       confidence,
-      providerScore: telesignResult ? telesignResult.score : null,
-      providerLevel: telesignResult ? telesignResult.level : null,
-      providerRecommendation: telesignResult ? telesignResult.recommendation : null,
+      providerScore: apiProviderResult ? apiProviderResult.score : null,
+      providerLevel: apiProviderResult ? apiProviderResult.type : null,
+      providerRecommendation: apiProviderResult ? apiProviderResult.carrier : null,
       data: {
         reportCount,
-        categories
+        categories,
+        carrier: apiProviderResult?.carrier,
+        phoneType: apiProviderResult?.type
       },
       indicators
     };
