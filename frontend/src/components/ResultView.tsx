@@ -120,6 +120,8 @@ export const ResultView: React.FC<ResultViewProps> = ({ result, onReset }) => {
 
   const getSourceBadgeText = () => {
     switch (source) {
+      case 'kredibel':
+        return 'Kredibel.co.id Fraud DB';
       case 'veriphone':
         return 'Veriphone Intelligence API';
       case 'abstract_api':

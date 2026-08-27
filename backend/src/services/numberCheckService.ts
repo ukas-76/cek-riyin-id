@@ -1,5 +1,6 @@
 import { pool } from '../db';
 import { normalizePhoneNumber, getCountryCodeInfo } from '../utils/phoneUtils';
+import { kredibelProvider } from '../providers/kredibelProvider';
 import { veriphoneProvider } from '../providers/veriphoneProvider';
 import { abstractApiProvider } from '../providers/abstractApiProvider';
 import { telesignProvider } from '../providers/telesignProvider';
@@ -13,7 +14,7 @@ export interface UnifiedCheckResult {
   riskLevel: CheckRiskLevel;
   title: string;
   description: string;
-  source: 'veriphone' | 'abstract_api' | 'telesign' | 'scamverify' | 'local_report' | 'local_rules' | 'combined' | 'unknown';
+  source: 'kredibel' | 'veriphone' | 'abstract_api' | 'telesign' | 'scamverify' | 'local_report' | 'local_rules' | 'combined' | 'unknown';
   confidence: 'high' | 'medium' | 'low';
   providerScore?: number | null;
   providerLevel?: string | null;
@@ -29,7 +30,7 @@ export interface UnifiedCheckResult {
 
 export class NumberCheckService {
   /**
-   * Performs reputation lookup on phone numbers combining local reports, country risk rules, Veriphone, AbstractAPI, and Telesign.
+   * Performs reputation lookup on phone numbers combining local reports, Kredibel.co.id, Veriphone, AbstractAPI, and Telesign.
    */
   async checkNumber(rawInput: string): Promise<UnifiedCheckResult> {
     const normalizedInput = normalizePhoneNumber(rawInput);
@@ -60,9 +61,9 @@ export class NumberCheckService {
     const categories = Array.from(categoriesSet);
     console.log(`[LOCAL_DB] Phone Reports Found: ${reportCount} (Categories: ${categories.join(', ') || 'None'})`);
 
-    // 2. Real External Provider Lookup (Priority 1: Veriphone [Free 1k/mo], Priority 2: AbstractAPI, Priority 3: Telesign)
+    // 2. Real External Provider Lookup (Priority 1: Kredibel, Priority 2: Veriphone, Priority 3: AbstractAPI, Priority 4: Telesign)
     let apiProviderResult: {
-      providerName: 'veriphone' | 'abstract_api' | 'telesign';
+      providerName: 'kredibel' | 'veriphone' | 'abstract_api' | 'telesign';
       riskSignal: 'LOW' | 'MEDIUM' | 'HIGH' | 'UNKNOWN';
       score?: number;
       type?: string;
@@ -72,7 +73,19 @@ export class NumberCheckService {
 
     let providerErrorMessage: string | undefined;
 
-    if (veriphoneProvider.isConfigured()) {
+    if (kredibelProvider.isConfigured()) {
+      const kredibelRes = await kredibelProvider.checkNumber(normalizedInput);
+      if (kredibelRes.status === 'success' && kredibelRes.result) {
+        apiProviderResult = {
+          providerName: 'kredibel',
+          riskSignal: kredibelRes.result.riskSignal,
+          score: kredibelRes.result.reportCount,
+          details: `Kredibel.co.id Fraud DB (${kredibelRes.result.reportCount} Laporan Penipuan)`
+        };
+      } else if (kredibelRes.status === 'error') {
+        providerErrorMessage = kredibelRes.errorMessage;
+      }
+    } else if (veriphoneProvider.isConfigured()) {
       const veriphoneRes = await veriphoneProvider.checkNumber(normalizedInput);
       if (veriphoneRes.status === 'success' && veriphoneRes.result) {
         apiProviderResult = {
@@ -126,7 +139,7 @@ export class NumberCheckService {
       const isMedium = apiProviderResult.riskSignal === 'MEDIUM';
       const isLow = apiProviderResult.riskSignal === 'LOW';
 
-      const providerLabel = apiProviderResult.providerName === 'veriphone' ? 'Veriphone' : apiProviderResult.providerName === 'abstract_api' ? 'AbstractAPI' : 'Telesign';
+      const providerLabel = apiProviderResult.providerName === 'kredibel' ? 'Kredibel.co.id' : apiProviderResult.providerName === 'veriphone' ? 'Veriphone' : apiProviderResult.providerName === 'abstract_api' ? 'AbstractAPI' : 'Telesign';
 
       if (reportCount >= 3 || isHigh) {
         riskLevel = 'HIGH';
