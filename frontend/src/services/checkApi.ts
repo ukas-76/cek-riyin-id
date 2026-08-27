@@ -26,7 +26,7 @@ export interface CheckApiResponse {
   riskLevel: CheckRiskLevel;
   title: string;
   description: string;
-  source: 'kredibel' | 'veriphone' | 'abstract_api' | 'telesign' | 'scamverify' | 'local_report' | 'local_rules' | 'combined' | 'unknown';
+  source: 'veriphone' | 'abstract_api' | 'telesign' | 'scamverify' | 'local_report' | 'local_rules' | 'combined' | 'unknown';
   confidence: 'high' | 'medium' | 'low';
   providerScore?: number | null;
   providerLevel?: string | null;
