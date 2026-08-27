@@ -120,12 +120,16 @@ export const ResultView: React.FC<ResultViewProps> = ({ result, onReset }) => {
 
   const getSourceBadgeText = () => {
     switch (source) {
+      case 'veriphone':
+        return 'Veriphone Intelligence API';
+      case 'abstract_api':
+        return 'AbstractAPI Phone Validation';
       case 'telesign':
         return 'Telesign Intelligence Cloud';
       case 'scamverify':
         return 'ScamVerify AI Analysis';
       case 'combined':
-        return 'Telesign + Laporan Komunitas';
+        return 'Sinyal API + Laporan Komunitas';
       case 'local_rules':
         return 'Analisis Aturan Heuristik';
       case 'unknown':
